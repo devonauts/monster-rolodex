@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
 
-function App() {
+class App extends Component {
+constructor () {
+    super ();
+
+    this.state = {
+
+      monsters: []
+    };
+};
+// this is a lifecycle that gets activated when React sends a component for the first time.
+componentDidMount() {
+  //this is a javascript method that allows to fetch data from any external server
+  fetch ("https://jsonplaceholder.typicode.com/users")
+  // after fetching the data we need to get it in an understandable language for the computer. meaning JSON format. We do that by using the .then method that comes from javascript. We set up response as the name for the item that we will get back and then transform it in a json format. 
+  .then(response => response.json())
+  // calling the then method, we populate the state with new information coming from the external source. We use the setState mehod and set monsters to equal the users json file. 
+  .then(users => this.setState({monsters:users}));
+
+}
+render () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+        <div className="App">
+
+        {
+          this.state.monsters.map(monster => <h1 key={monster.id}>{monster.name}</h1>)
+        }
+        </div>
+  )
+}
 }
 
 export default App;
