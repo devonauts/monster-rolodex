@@ -9,7 +9,9 @@ constructor () {
 
     this.state = {
 
-      monsters: []
+      monsters: [],
+      //we need to store string from search to find card
+      searchField:''
     };
 };
 // this is a lifecycle that gets activated when React sends a component for the first time.
@@ -23,10 +25,20 @@ componentDidMount() {
 
 }
 render () {
+  // we destructured the state and got 2 constants that will be used to filter what the person typed in the searchfield. 
+  const { monsters, searchField } = this.state; 
+  // we created a new constant that will filter the arrays
+  const filteredMonsters = monsters.filter(monster => 
+    // when using the .include method, we compare whats inside the parenthesis with the previous statement. In this case, we compare the name of the monster transformed to lowercase with the searchfield input converted in lowercase, then that will be rendered.
+    monster.name.toLowerCase().includes(searchField.toLowerCase())
+    );
+
   return (
 
         <div className="App">
-        <Cardlist monsters= {this.state.monsters}/>
+        <input type='search' placeholder='Search Monsters' onChange={event => this.setState({searchField: event.target.value})}/>
+
+        <Cardlist monsters= {filteredMonsters}/>
         </div>
   )
 }
